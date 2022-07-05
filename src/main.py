@@ -1,7 +1,7 @@
 from colorama import Fore, Style
 from hangman.utils import WordGenerator, ConfigLoader, initialize_colors
 from string import ascii_letters
-from letters import Letters
+from letters import Letters, Lists
 from pygame.surface import Surface
 from pygame.sprite import Sprite
 import pygame
@@ -77,7 +77,7 @@ guessed_letters = [' ' for _ in range(len(word))]
 wrong_letters = [' ' for _ in range(lives)]
 
 pygame.init()
-width = 1000
+width = 1050
 height = 600
 
 screen = pygame.display.set_mode((width,height))
@@ -86,8 +86,10 @@ screen.fill((255,255,255))
 pygame.display.flip()
 
 #letter1 = letters()
-Letters.create_all_letters(screen, 620, 90, 65, 90, 5)
-Letters.create_word(screen, 120, 90, word)
+lists = Lists()
+lists.create_all_letters(screen, 50, 450, ord('a'), ord('z'), 13)
+guessed = Lists()
+guessed.create_word(screen, 100, 90, guessed_letters)
 
 running =  True
 while running:
@@ -100,7 +102,36 @@ while running:
           running = False
 
   pressed_keys = pygame.key.get_pressed()
-  
+  for i in range(0,len(pressed_keys)):
+    if pressed_keys[i] and i in range(97,122):
+      lists.all_letters[i-97].select(screen)
+      letter_input = chr(i)
+      # letter not in chosen word
+      if letter_input not in word:
+        #print("wrong letter :P")
+        if letter_input not in wrong_letters:
+          lives -= 1
+          wrong_letters.append(letter_input)
+
+      # correct letter
+      elif letter_input in word:
+        # if letter not in guessed letters
+        if letter_input not in guessed_letters:
+          #print("letter guessed!")
+          guessed_letters[word.index(letter_input)] = letter_input         
+          guessed.update(screen, 100, 90, guessed_letters[word.index(letter_input)],word.index(letter_input))
+          # if a letter has more than two characters on a word
+          if word.count(letter_input) >= 2:
+            for x in indices(word, letter_input):
+              guessed_letters[x] = letter_input
+              guessed.update(screen, 100, 90, guessed_letters[x],x)
+          
+          # if letter already guessed
+          else:
+            print("letter already guessed.")
+
+    #97 - A or a, 122 - Z or z
+
   pygame.display.flip()
 
 
