@@ -1,26 +1,13 @@
 from curses.textpad import Textbox
-from colorama import Fore, Style
-from sqlalchemy import false
+from colorama import Fore
 from hangman.utils import WordGenerator, ConfigLoader, initialize_colors
-from string import ascii_letters
-from letters import Letters, Lists,Textbox
-from pygame.surface import Surface
-from pygame.sprite import Sprite
+from letters import Lists,Textbox
 from snail import Snail
 from tkinter import messagebox as msg
-import pygame
 import pygame
 from pygame.locals import *
 from pygame import mixer
 from pygame.locals import (
-    K_UP,
-    K_DOWN,
-    K_LEFT,
-    K_RIGHT,
-    K_w,
-    K_a,
-    K_s,
-    K_d,
     K_ESCAPE,
     KEYDOWN,
     QUIT,

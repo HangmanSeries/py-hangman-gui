@@ -1,6 +1,4 @@
-from ast import Pass
 from pygame.sprite import Sprite
-from pygame import Surface
 import pygame
 
 
