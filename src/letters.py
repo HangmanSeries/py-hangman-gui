@@ -1,7 +1,6 @@
 from pygame.sprite import Sprite
 import pygame
 
-
 class Letters(Sprite):
     def __init__(self,screen,character,col,row,origin_x, origin_y, color):
         self.color = color

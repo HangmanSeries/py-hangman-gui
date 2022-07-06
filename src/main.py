@@ -65,7 +65,7 @@ def run():
 
   # lives
   lives = config.get_setting('lives')
-  # print(lives)
+
 
   # welcome message
   print("Welcome to the Game of Hangman :D\n")
@@ -79,19 +79,19 @@ def run():
   height = 650
   screen = pygame.display.set_mode((width,height))
   pygame.display.set_caption('Py-Hangman')
-  screen.fill((255,255,255))
+  screen.fill(pygame.Color('Whitesmoke'))
   pygame.display.flip()
 
 
   #letter1 = letters()
   lists = Lists()
-  lists.create_all_letters(screen, 48, 510, ord('a'), ord('z'), 13)
+  lists.create_all_letters(screen, 48, 520, ord('a'), ord('z'), 13)
   guessed = Lists()
   guessed.create_word(screen, 100, 90, guessed_letters, pygame.Color('Black'))
   #creating our sprite object
 
-  enemy_snail = Snail(0,150,1)
-  my_snail = Snail(0,250,0)
+  enemy_snail = Snail(0,50,1)
+  my_snail = Snail(0,200,0)
 
   #creating a group with our sprite
   sprite_group = pygame.sprite.Group()
@@ -102,8 +102,8 @@ def run():
   #getting the pygame clock for handling fps
   clock = pygame.time.Clock()
 
-  stats = Textbox(screen, 920,30,'Lives: '+str(lives), pygame.Color('Black'),pygame.Color('White'),80)
-  category = Textbox(screen, width//2,20,'Category: ' + string_category, pygame.Color('Black'),pygame.Color('White'),50)
+  stats = Textbox(screen, 920,30,'Lives: '+str(lives), pygame.Color('Black'),pygame.Color('Whitesmoke'),80)
+  category = Textbox(screen, width//2,20,'Category: ' + string_category, pygame.Color('Black'),pygame.Color('Whitesmoke'),50)
   running =  True
 
   while running:
@@ -149,26 +149,28 @@ def run():
               print("letter already guessed.")
 
     if lives<=0:
-      print("You lose BOOMER!")
-      print("Answer: {}".format(word))
+      my_snail.changefps(39,47,4)
       s = guessed.create_word(screen, 100, 90, word, pygame.Color('Gold'))
       my_snail.speedchanger = 0
-      enemy_snail.speedchanger += 1
+      enemy_snail.speedchanger += 0.5
 
       # if all blanks are filled up
     if all_not_blank(guessed_letters):
-      print(f'\nAnswer: {word}')
-      print("complete!")
+      enemy_snail.changefps(39,47,4)
       enemy_snail.speedchanger = 0
-      my_snail.speedchanger += 1
+      my_snail.speedchanger += 0.5
       #exit() 
+    
+    #when enemy wins race without lives not 0
+    if enemy_snail.rect.centerx >= width:
+      guessed.create_word(screen, 100, 90, word, pygame.Color('Gold'))
       
     if enemy_snail.rect.left >= width:
-      print('Enemy win')
+      my_snail.speedchanger = 0
       return False
     
     if my_snail.rect.left >= width:
-      print('You win')
+      my_snail.speedchanger = 0
       return True
 
 
@@ -176,7 +178,7 @@ def run():
     #97 - A or a, 122 - Z or z
     #updating the sprite
 
-    screen.fill((255,255,255),(0,150,width,320))
+    screen.fill(pygame.Color('Khaki'),(0,150,width,320))
     my_snail.move()
     enemy_snail.move()
     
@@ -188,78 +190,6 @@ def run():
     #finally delaying the loop to with clock tick for 10fps 
     pygame.display.flip()
     clock.tick(10)
-
-
-    # # letters guessed
-    # print(Fore.GREEN + Style.BRIGHT + "|  W O R D  |" + Style.RESET_ALL)
-    # # Category
-    # print("Category: {}".format(string_category))
-    # for x in guessed_letters:
-    #   print(x, end=" ")
-
-    # if any_wrong_letter(wrong_letters):
-    #   print((Fore.RED + "\tWrong letters: " + Fore.RESET).expandtabs(6))
-    #   for x in wrong_letters:
-    #     print(x, end=" ")
-
-    # # new line
-    # print()
-
-    # # if all blanks are filled up
-    # if all_not_blank(guessed_letters):
-    #   print(f'\nAnswer: {word}')
-    #   print("complete!")
-    #   exit()
-
-    # # number of lives
-    # print(f"Lives: {lives_color(lives)}")
-
-    # if not lives:
-    #   print("You lose BOOMER!")
-    #   print("Answer: {}".format(word))
-    #   break
-
-    # # simply input
-    # letter_input = input("\n=> ")
-
-    # # exit
-    # if letter_input == 'exit':
-    #   break
-    # # player giving up
-    # elif letter_input == "giveup":
-    #   print("Answer:", word)
-    #   break
-    # # empty string
-    # elif letter_input == '':
-    #   print("Letter letter LEEEEETTTTTEEERRRRRR!")
-    # elif letter_input not in ascii_letters:
-    #   print("Not a symbol")
-    # elif letter_input == 'clue':
-    #   print("Starts with {}".format(word[0]))
-    # # not 1 letter
-    # elif len(letter_input) != 1:
-    #   print("letter please.")
-    # # letter not in chosen word
-    # elif letter_input not in word:
-    #   print("wrong letter :P")
-    #   if letter_input not in wrong_letters:
-    #     lives -= 1
-    #     wrong_letters.append(letter_input)
-
-    # # correct letter
-    # elif letter_input in word:
-    #   # if letter not in guessed letters
-    #   if letter_input not in guessed_letters:
-    #     print("letter guessed!")
-    #     guessed_letters[word.index(letter_input)] = letter_input
-
-    #     # if a letter has more than two characters on a word
-    #     if word.count(letter_input) >= 2:
-    #       for x in indices(word, letter_input):
-    #         guessed_letters[x] = letter_input
-    #   # if letter already guessed
-    #   else:
-    #     print("letter already guessed.")
 
 while True:
   result = run()
