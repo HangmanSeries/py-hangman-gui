@@ -12,7 +12,6 @@ import pygame
 import pygame
 from pygame.locals import *
 from pygame import mixer
-from ground import Ground
 from pygame.locals import (
     K_UP,
     K_DOWN,
