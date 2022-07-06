@@ -277,13 +277,13 @@ def run():
 while True:
   result = run()
   if result:
-    message = 'Congratulation'
+    message = 'Congratulations!'
     mixer.music.load('Music/win.wav')
     mixer.music.play()
   else:
     message = 'You lose Booomer!'
     mixer.music.load('Music/lose.wav')
     mixer.music.play()
-  restart = msg.askyesno("",str(message) + "\nWanna play again?")
+  restart = msg.askyesno("Py-Hangman",str(message) + "\nWanna play again?")
   if not restart:
     break
